@@ -27,6 +27,7 @@ crazyflow = [
     "numpy>=2.0.0,<3",
     "jax[cuda]>=0.7.2,!=0.10.2", # 0.10.2 XLA:GPU miscompiles for larger swarms
     "mujoco==3.3.7",
+    "mujoco-mjx==3.3.7", # MJX must match the MuJoCo release, MJX 4 needs MuJoCo 4
     "fire>=0.7.1,<0.8",
     "ml-collections",
     "polars>=1.35.0,<2",
@@ -91,6 +92,7 @@ test-all = { depends-on = [
     { task = "test", environment = "figure8" },
     { task = "test", environment = "learn2fly" },
     { task = "test", environment = "throw" },
+    { task = "test", environment = "safe-reach" },
     { task = "test", environment = "racing" },
     { task = "test", environment = "mppi" },
     { task = "test", environment = "sim2real" },
@@ -132,6 +134,7 @@ mppi = { features = ["kilted", "crazyflow", "deploy", "mppi"], platforms = ["lin
 figure8 = { features = ["kilted", "crazyflow", "deploy", "rl"]}
 learn2fly = { features = ["kilted", "crazyflow", "deploy", "rl"]}
 throw = { features = ["kilted", "crazyflow", "deploy", "rl"]}
+safe-reach = { features = ["kilted", "crazyflow", "deploy", "rl"]}
 vision = { features = ["kilted", "crazyflow", "deploy", "vision"] }
 l2f = { features = ["l2f", "crazyflow"], platforms = ["linux-64"] }
 flightmare = { features = ["flightmare", "crazyflow"], platforms = ["linux-64"] }

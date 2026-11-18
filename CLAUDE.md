@@ -19,6 +19,7 @@ every dependency, so each experiment domain has its own environment, defined in 
 | `racing` | `racing/` |
 | `mppi` | `mppi_obstacles/` |
 | `figure8`, `learn2fly`, `throw` | `figure8/`, `learn2fly/`, `throw/` |
+| `safe-reach` | `safe_reach/` (Pixi environment names cannot contain underscores) |
 | `vision` | `vision/` |
 | `pybullet`, `l2f`, `flightmare`, `diff-aero`, `aerial-gym` | Baselines for `benchmarks/` and `sim2real/` |
 
@@ -126,6 +127,7 @@ crazyflow_experiments/
 ├── figure8/         # Figure-8 tracking policies (BPTT, PPO)
 ├── learn2fly/       # Reach-position policies (TD3)
 ├── throw/           # Throw-and-stabilize policies (BPTT)
+├── safe_reach/      # Goal reaching through obstacles with CBF safety filters and rewards (PPO)
 ├── mppi_obstacles/  # MPPI obstacle avoidance
 ├── racing/          # Trajectory planning & drone racing
 └── vision/          # Vision training, simulation, deployment and scene reconstruction
@@ -170,7 +172,7 @@ respective Pixi environments.
 
 ### RL Experiments
 
-The three RL experiments share their building blocks through `core/`. The gymnasium tasks in
+The RL experiments share their building blocks through `core/`. The gymnasium tasks in
 `core/envs/` all build on the common `drone_env.py` base, and `core/envs/wrappers.py` supplies
 action normalization, observation flattening and action penalties. The Flax policies in
 `core/agents/` cover BPTT in a stochastic and a deterministic variant, PPO and TD3.
@@ -181,6 +183,13 @@ in `utils/paths.py` so that no module builds an output path of its own. `figure8
 tracking with one `train_*.py` per algorithm, `learn2fly/` trains reach-position policies through
 `train.py` and exports the actor as a C header with `export.py`, and `throw/` trains
 throw-and-stabilize policies through `train.py`.
+
+`safe_reach/` reads its whole run from `config.toml` through `safe_reach/config.py`: every table
+becomes a frozen dataclass whose fields are exactly the table's keys, so unknown or missing keys
+raise on load and the values live only in the TOML file. Variants of a run are overlay files in
+`safe_reach/configs/` holding just the keys they change, merged over the base in order, and single
+values are overridden with dotted keys, which fire passes through from the command line
+(`--drone.dynamics first_principles`). `Config.flat()` gives the same dotted keys for wandb.
 
 Experiments that run on hardware follow the same convention, where `controller.py` wraps the trained
 policy, `deploy.py` flies it and `sim.py` runs it in simulation.
@@ -201,6 +210,7 @@ Evaluation scripts and tests that report such an error call these instead of com
 | `crazyflow_experiments/figure8/config.toml` | Crazyflie, controller (`ppo`, `bptt` or `mpc`) and trajectory of the figure-8 flights |
 | `crazyflow_experiments/learn2fly/config.toml` | Crazyflie and trajectory of the reach-position flights, in simulation and with the onboard TD3 policy |
 | `crazyflow_experiments/throw/config.toml` | Drone and control frequency for the throw experiment |
+| `crazyflow_experiments/safe_reach/config.toml` | Drone model and simulator dynamics of the safe reach runs; variants as overlays in `safe_reach/configs/` |
 | `crazyflow_experiments/mppi_obstacles/config.toml` | MPPI parameters, cost weights and obstacle layout |
 | `crazyflow_experiments/vision/config.toml` | Drone and manual control interface for camera data collection |
 | `crazyflow_experiments/sysid/config.toml` | Drone as in the sim2real config, controller, origin and trajectory set of the identification flight |

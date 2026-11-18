@@ -1,0 +1,3 @@
+[drone]
+model = "cf21B_500" # drone model, selects the physical parameters in crazyflow
+dynamics = "so_rpy" # simulator dynamics, e.g. so_rpy, first_principles, so_rpy_rotor_drag

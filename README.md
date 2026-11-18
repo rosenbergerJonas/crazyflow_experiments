@@ -47,6 +47,7 @@ Each experiment has its own environment to avoid dependency conflicts between di
 | `racing` | `racing/` |
 | `mppi` | `mppi_obstacles/` |
 | `figure8`, `learn2fly`, `throw` | `figure8/`, `learn2fly/`, `throw/` |
+| `safe-reach` | `safe_reach/` |
 | `vision` | `vision/` |
 | `pybullet`, `l2f`, `flightmare`, `diff-aero`, `aerial-gym` | Baselines for `benchmarks/` and `sim2real/` |
 
@@ -122,10 +123,11 @@ Each experiment lives in its own folder and has its own readme with the setup an
 | Figure-8 tracking | [`crazyflow_experiments/figure8/`](crazyflow_experiments/figure8/README.md) |
 | Reach position | [`crazyflow_experiments/learn2fly/`](crazyflow_experiments/learn2fly/README.md) |
 | Throw and stabilize | [`crazyflow_experiments/throw/`](crazyflow_experiments/throw/README.md) |
+| Safe reach with control barrier functions | [`crazyflow_experiments/safe_reach/`](crazyflow_experiments/safe_reach/README.md) |
 | MPPI obstacle avoidance | [`crazyflow_experiments/mppi_obstacles/`](crazyflow_experiments/mppi_obstacles/README.md) |
 | Vision | [`crazyflow_experiments/vision/`](crazyflow_experiments/vision/README.md) |
 
-For the learned controllers (figure-8 tracking, reach position, throw and stabilize), environments and agents are implemented in `core/`. Checkpoints and recordings go under `saves/` and `results/`.
+For the learned controllers (figure-8 tracking, reach position, throw and stabilize, safe reach), environments and agents are implemented in `core/`. Checkpoints and recordings go under `saves/` and `results/`.
 
 ## Development
 Since our experiments cover multiple environments, the tests also need to run in multiple environments. Each test module therefore declares the environment it needs and skips itself elsewhere. This allows us to run a single test-all command that checks everything
